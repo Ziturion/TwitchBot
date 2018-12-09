@@ -1,0 +1,19 @@
+{
+  "uptimeNOT": "Der Stream ist momentan nicht erreichbar...",
+  "uptime": "Der Stream geht schon {time} lang.",
+  "social": "[Social] Yo {name}, du findest mich auf Twitter unter: https://twitter.com/Ziturion.",
+  "info": "[Info] Mein Name ist Daniel, ich bin 23 und wohne in NRW.",
+  "teamspeak": "[Teamspeak] IP: 176.9.41.211:10900",
+  "discord": "[Discord] Der Discord ist noch nicht eingerichtet. Nutz erstmal den !teamspeak oder Stephans Discord: https://discord.gg/5XfDpjb.",
+  "instagram": "[Instagram] Hey {name}, auf Instagram findest du mich unter: https://www.instagram.com/ziturion.",
+  "followNOT": "Du folgst mir nicht :c",
+  "watchtime": "[Watchtime] Das ist leider noch nicht eingerichtet...",
+  "liebeNOT": "{name}, sorry es ist gerade niemand da :(",
+  "liebe": "{name} und {other} passen zu {percent}% zusammen. bleedPurple",
+  "hugNOT": "{name}, sorry es ist gerade niemand da :(",
+  "hugRANDOM": "{name} wirft sich durch den Chat und umarmt {other} zufällig! bleedPurple",
+  "hug": "{name} umarmt {other} ganz ganz doll! <3 bleedPurple <3",
+  "witzUSAGE": "Usage: !witz <number> (optional, must be in Range: {length})",
+  "qouteUSAGE": "Usage: !qoute <number> (optional, must be in Range: {length})",
+  "cmd": "[Commands] Momentan gibt es diese Befehle: !uptime, !twitter, !info, !ts, !insta, !followed, !hug <user>, !liebe, !flachwitz -~- unfertig: !watchtime, !discord"
+}
