@@ -4,7 +4,7 @@ const blacklist = require('./config/blacklist');
 const witzejson = require('./config/witze.json');
 const qoutejson = require('./config/qoutes.json');
 
-const channelusername = "username";
+const channelusername = 'username';
 const channeluserid = 999999999;
 
 const minimumHostCount = 1;
@@ -14,26 +14,26 @@ const options = {
         debug: true
     },
     connection: {
-        cluster: "aws",
+        cluster: 'aws',
         reconnect: true
     },
     identity: {
-        username: "ZiturionBot",
+        username: 'ZiturionBot',
         password: keys.twitch.oauthpassword
     },
     channels: [channelusername]
 };
 
-const querystring = require("querystring"),
-    fetch = require("node-fetch");
+const querystring = require('querystring'),
+    fetch = require('node-fetch');
 
-const qUrl = "https://api.twitch.tv/helix/streams?user_login=" + channelusername;
-const uUrl = "https://api.twitch.tv/helix/users?login=";
-var followUrl = "https://api.twitch.tv/helix/users/follows?from_id=";
+const qUrl = 'https://api.twitch.tv/helix/streams?user_login=' + channelusername;
+const uUrl = 'https://api.twitch.tv/helix/users?login=';
+var followUrl = 'https://api.twitch.tv/helix/users/follows?from_id=';
 
 const fetchArgs = {
     headers: {
-        "Client-ID": keys.twitch.Client_ID
+        'Client-ID': keys.twitch.Client_ID
     }
 };
 
@@ -43,7 +43,7 @@ const client = new tmi.client(options);
 client.connect();
 
 client.on('connected', (adress, port) => {
-    client.action(channelusername, "Loading ZiturionBot...");
+    client.action(channelusername, 'Loading ZiturionBot...');
 });
 
 client.on('chat', (channel, user, message, self) => { //e.g. message: !Example arg1 arg2
@@ -55,11 +55,11 @@ client.on('chat', (channel, user, message, self) => { //e.g. message: !Example a
     sayCommand(channel, user, command, params);
 });
 
-client.on("hosted", (channel, username, viewers, autohost) => {
+client.on('hosted', (channel, username, viewers, autohost) => {
     if (viewers < minimumHostCount)
         return; //return 0 people hosts
-    var autohosttext = autohost ? "(autohost)" : "";
-    client.action(channelusername, username + " bringt " + viewers + " Zuschauer mit." + autohosttext);
+    var autohosttext = autohost ? '(autohost)' : '';
+    client.action(channelusername, username + ' bringt ' + viewers + ' Zuschauer mit.' + autohosttext);
 });
 
 function timeSince(date) {
@@ -67,91 +67,91 @@ function timeSince(date) {
     var seconds = Math.floor((new Date() - date) / 1000);
 
     var interval = Math.floor(seconds / 31536000);
-    var timestring = "";
+    var timestring = '';
 
     if (interval >= 1) {
-        timestring += interval + " Jahr" + (interval == 1 ? ", " : "e, ");
+        timestring += interval + ' Jahr' + (interval == 1 ? ', ' : 'e, ');
     }
     interval = Math.floor(seconds / 2592000);
     if (interval >= 1) {
-        timestring += interval % 12 + " Monat" + (interval == 1 ? ", " : "e, ");
+        timestring += interval % 12 + ' Monat' + (interval == 1 ? ', ' : 'e, ');
     }
     interval = Math.floor(seconds / 86400);
     if (interval >= 1) {
-        timestring += interval % 30 + " Tag" + (interval == 1 ? ", " : "e, ");
+        timestring += interval % 30 + ' Tag' + (interval == 1 ? ', ' : 'e, ');
     }
     interval = Math.floor(seconds / 3600);
     if (interval >= 1) {
-        timestring += interval % 24 + " Stunde" + (interval == 1 ? ", " : "n, ");
+        timestring += interval % 24 + ' Stunde' + (interval == 1 ? ', ' : 'n, ');
     }
     interval = Math.floor(seconds / 60);
     if (interval >= 1) {
-        timestring += interval % 60 + " Minute" + (interval == 1 ? ", " : "n, ");
+        timestring += interval % 60 + ' Minute' + (interval == 1 ? ', ' : 'n, ');
     }
-    return timestring += seconds % 60 + " Sekunde" + (seconds == 1 ? "" : "n");
+    return timestring += seconds % 60 + ' Sekunde' + (seconds == 1 ? '' : 'n');
 }
 
 function sayCommand(channel, user, command, params) {
     //Commands
     switch (command) {
-        case "uptime":
+        case 'uptime':
             fetch(qUrl, fetchArgs)
                 .then(res => res.json())
                 .then(data => {
-                    var uptimeString = "";
-                    if (typeof data.data[0] == "undefined")
-                        uptimeString = "Der Stream ist momentan nicht erreichbar...";
+                    var uptimeString = '';
+                    if (typeof data.data[0] == 'undefined')
+                        uptimeString = 'Der Stream ist momentan nicht erreichbar...';
                     else {
-                        uptimeString = "Der Stream geht schon " + timeSince(new Date(data.data[0]["started_at"])) + " lang.";
+                        uptimeString = 'Der Stream geht schon ' + timeSince(new Date(data.data[0]['started_at'])) + ' lang.';
                     }
-                    client.say(channelusername, "[Uptime] " + uptimeString);
+                    client.say(channelusername, '[Uptime] ' + uptimeString);
                 })
                 .catch(err => console.error(err));
             break;
-        case "twitter":
-        case "social":
-            client.say(channelusername, "[Social] Yo " + user['display-name'] + ", du findest mich auf Twitter unter: https://twitter.com/Ziturion.");
+        case 'twitter':
+        case 'social':
+            client.say(channelusername, '[Social] Yo ' + user['display-name'] + ', du findest mich auf Twitter unter: https://twitter.com/Ziturion.');
             break;
-        case "info":
-            client.say(channelusername, "[Info] Mein Name ist Daniel, ich bin 23 und wohne in NRW.");
+        case 'info':
+            client.say(channelusername, '[Info] Mein Name ist Daniel, ich bin 23 und wohne in NRW.');
             break;
-        case "teamspeak":
-        case "ts":
-            client.say(channelusername, "[Teamspeak] IP: 176.9.41.211:10900");
+        case 'teamspeak':
+        case 'ts':
+            client.say(channelusername, '[Teamspeak] IP: 176.9.41.211:10900');
             break;
-        case "discord":
-            client.say(channelusername, "[Discord] Der Discord ist noch nicht eingerichtet. Nutz erstmal den !teamspeak oder Stephans Discord: https://discord.gg/5XfDpjb.");
+        case 'discord':
+            client.say(channelusername, '[Discord] Der Discord ist noch nicht eingerichtet. Nutz erstmal den !teamspeak oder Stephans Discord: https://discord.gg/5XfDpjb.');
             break;
-        case "instagram":
-        case "insta":
-            client.say(channelusername, "[Instagram] Hey " + user['display-name'] + ", auf Instagram findest du mich unter: https://www.instagram.com/ziturion.");
+        case 'instagram':
+        case 'insta':
+            client.say(channelusername, '[Instagram] Hey ' + user['display-name'] + ', auf Instagram findest du mich unter: https://www.instagram.com/ziturion.');
             break;
-        case "followed":
-        case "follow":
+        case 'followed':
+        case 'follow':
 			var usernameid = user['user-id'];
 			if (params.length >= 1) {
 				fetch(uUrl + params[0], fetchArgs)
                 .then(res => res.json())
                 .then(data => {
 					console.log(data.data);
-					usernameid = data.data[0]["id"];
+					usernameid = data.data[0]['id'];
 				})
 				.then(data => {
 					console.log(followUrl + usernameid);
 					fetch(followUrl + usernameid, fetchArgs)
 					.then(res => res.json())
 					.then(data => {
-						var uptimeString = "";
-						if (typeof data.data[0] == "undefined")
-							uptimeString = "Du folgst mir nicht :c";
+						var uptimeString = '';
+						if (typeof data.data[0] == 'undefined')
+							uptimeString = 'Du folgst mir nicht :c';
 						for (var i = 0; i < data.data.length; i++) {
-							if (data.data[i]["to_id"] == channeluserid) {
-								uptimeString = timeSince(new Date(data.data[i]["followed_at"]));
+							if (data.data[i]['to_id'] == channeluserid) {
+								uptimeString = timeSince(new Date(data.data[i]['followed_at']));
 								break;
 							}
-							uptimeString = "Du folgst mir nicht :c";
+							uptimeString = 'Du folgst mir nicht :c';
 						}
-						client.say(channelusername, "[Follow] " + uptimeString);
+						client.say(channelusername, '[Follow] ' + uptimeString);
 						})
 						.catch(err => console.error(err));
 				})
@@ -162,93 +162,93 @@ function sayCommand(channel, user, command, params) {
 				fetch(followUrl + usernameid, fetchArgs)
 				.then(res => res.json())
 				.then(data => {
-					var uptimeString = "";
+					var uptimeString = '';
 					console.log(data);
-					if (typeof data.data[0] == "undefined")
-						uptimeString = "Du folgst mir nicht :c";
+					if (typeof data.data[0] == 'undefined')
+						uptimeString = 'Du folgst mir nicht :c';
 					for (var i = 0; i < data.data.length; i++) {
-						if (data.data[i]["to_id"] == channeluserid) {
-							uptimeString = timeSince(new Date(data.data[i]["followed_at"]));
+						if (data.data[i]['to_id'] == channeluserid) {
+							uptimeString = timeSince(new Date(data.data[i]['followed_at']));
 							break;
 						}
-						uptimeString = "Du folgst mir nicht :c";
+						uptimeString = 'Du folgst mir nicht :c';
 					}
-					client.say(channelusername, "[Follow] " + uptimeString);
+					client.say(channelusername, '[Follow] ' + uptimeString);
 					})
 					.catch(err => console.error(err));
 			}
             break;
-        case "watchtime":
-            client.say(channelusername, "[Watchtime] Das ist leider noch nicht eingerichtet...");
+        case 'watchtime':
+            client.say(channelusername, '[Watchtime] Das ist leider noch nicht eingerichtet...');
             break;
-        case "liebe":
-            var lovestring = "";
+        case 'liebe':
+            var lovestring = '';
             getRandomChatter(channelusername, { skipList: [user['display-name'].toLowerCase()] })
                 .then(useritem => {
                     if (useritem === null) {
-                        lovestring = user['display-name'] + ", sorry es ist gerade niemand da :(";
+                        lovestring = user['display-name'] + ', sorry es ist gerade niemand da :(';
                     }
                     else {
                         let { name, type } = useritem;
-                        lovestring = user['display-name'] + " und " + name + " passen zu " + getRandomInt(1, 100) + "% zusammen. bleedPurple";
+                        lovestring = user['display-name'] + ' und ' + name + ' passen zu ' + getRandomInt(1, 100) + '% zusammen. bleedPurple';
                     }
-                    client.say(channelusername, "[Fun] " + lovestring);
+                    client.say(channelusername, '[Fun] ' + lovestring);
                 });
             break;
-        case "hug":
+        case 'hug':
             if (params.length < 1) {
-                var hugstring = "";
+                var hugstring = '';
                 getRandomChatter(channelusername, { skipList: [user['display-name'].toLowerCase()] })
                     .then(useritem => {
                         if (useritem === null) {
-                            hugstring = user['display-name'] + ", sorry es ist gerade niemand da :(";
+                            hugstring = user['display-name'] + ', sorry es ist gerade niemand da :(';
                         }
                         else {
                             let { name, type } = useritem;
-                            hugstring = user['display-name'] + " wirft sich durch den Chat und umarmt " + name + " zufällig! bleedPurple";
+                            hugstring = user['display-name'] + ' wirft sich durch den Chat und umarmt ' + name + ' zufällig! bleedPurple';
                         }
-                        client.say(channelusername, "[Fun] " + hugstring);
+                        client.say(channelusername, '[Fun] ' + hugstring);
                     });
             }
             else {
-                client.say(channelusername, "[Fun] " + user['display-name'] + " umarmt " + params[0] + " ganz ganz doll! <3 bleedPurple <3");
+                client.say(channelusername, '[Fun] ' + user['display-name'] + ' umarmt ' + params[0] + ' ganz ganz doll! <3 bleedPurple <3');
             }
             break;
-        case "witz":
-        case "flachwitz":
-            var witzarray = witzejson["witze"];
+        case 'witz':
+        case 'flachwitz':
+            var witzarray = witzejson['witze'];
             var witz;
             if (params.length < 1) {
                 witz = witzarray[getRandomInt(0, witzarray.length)];
             }
             else {
-                if (typeof witzarray[params[0]] != "undefined") {
+                if (typeof witzarray[params[0]] != 'undefined') {
                     witz = witzarray[params[0]];
                 } else {
-                    witz = "Usage: !witz <number> (optional, must be in Range: " + (witzarray.length - 1) + ")";
+                    witz = 'Usage: !witz <number> (optional, must be in Range: ' + (witzarray.length - 1) + ')';
                 }
             }
-            client.say(channelusername, "[Fun] " + witz);
+            client.say(channelusername, '[Fun] ' + witz);
             break;
-        case "qoute":
-            var qoutearray = qoutejson["qoutes"];
+        case 'qoute':
+            var qoutearray = qoutejson['qoutes'];
             var qoute;
             if (params.length < 1) {
                 qoute = qoutearray[getRandomInt(0, qoutearray.length)];
             }
             else {
-                if (typeof qoutearray[params[0]] != "undefined") {
+                if (typeof qoutearray[params[0]] != 'undefined') {
                     qoute = qoutearray[params[0]];
                 } else {
-                    qoute = "Usage: !qoute <number> (optional, must be in Range: " + (qoutearray.length - 1) + ")";
+                    qoute = 'Usage: !qoute <number> (optional, must be in Range: ' + (qoutearray.length - 1) + ')';
                 }
             }
-            client.say(channelusername, "[Qoute] " + qoute);
+            client.say(channelusername, '[Qoute] ' + qoute);
             break;
-        case "commands":
-        case "cmd":
-        case "befehle":
-            client.say(channelusername, "[Commands] Momentan gibt es diese Befehle: !uptime, !twitter, !info, !ts, !insta, !deathbrain, !followed, !hug <user>, !liebe, !flachwitz -~- unfertig: !watchtime, !discord");
+        case 'commands':
+        case 'cmd':
+        case 'befehle':
+            client.say(channelusername, '[Commands] Momentan gibt es diese Befehle: !uptime, !twitter, !info, !ts, !insta, !deathbrain, !followed, !hug <user>, !liebe, !flachwitz -~- unfertig: !watchtime, !discord');
             break;
         default:
         //default Block
@@ -257,17 +257,17 @@ function sayCommand(channel, user, command, params) {
     //Mod Commands
     if (user['mod'] || user['display-name'] == channelusername) {
         switch (command) {
-            case "disconnect":
-                client.action(channelusername, "Disconneting...");
+            case 'disconnect':
+                client.action(channelusername, 'Disconneting...');
                 client.disconnect();
                 break;
-			case "refresh": //not implemented
-                client.action(channelusername, "Reloading... (not tested)");
+			case 'refresh': //not implemented
+                client.action(channelusername, 'Reloading... (not tested)');
                 client.disconnect();
                 client.connect();
                 break;
-            case "addqoute":
-                client.say(channelusername, "[Qoute] " + addQoute("test 1.1.2028"));
+            case 'addqoute':
+                client.say(channelusername, '[Qoute] ' + addQoute('test 1.1.2028'));
                 break;
         default:
             //default Block
@@ -279,10 +279,10 @@ function sayCommand(channel, user, command, params) {
 
     //Timeouts
     switch (command) {
-        case "<message deleted>":
-        case "<nachricht gelöscht>":
-            client.timeout(channelusername, user['display-name'], 20, "Fake Purge");
-            client.action(channelusername, user['display-name'] + ", bitte keine Fake Purges. Danke.");
+        case '<message deleted>':
+        case '<nachricht gelöscht>':
+            client.timeout(channelusername, user['display-name'], 20, 'Fake Purge');
+            client.action(channelusername, user['display-name'] + ', bitte keine Fake Purges. Danke.');
             break;
         default:
         //default Block
@@ -294,7 +294,7 @@ function getRandomInt(min, max) {
 }
 
 function getChatters(channelName, _attemptCount = 0) {
-    return fetch("https://tmi.twitch.tv/group/user/" + channelusername + "/chatters", fetchArgs)
+    return fetch('https://tmi.twitch.tv/group/user/' + channelusername + '/chatters', fetchArgs)
         .then(res => res.json())
         .then(data => {
             return Object.entries(data.chatters)
@@ -337,6 +337,6 @@ function addQoute(qoute) {
     var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     var date = new Date();
     date.toLocaleDateString('en-US', options);
-    qoutejson["qoutes"].push(qoute);
-    return "qoutes kann man bisher nur manuell hinzufügen";
+    qoutejson['qoutes'].push(qoute);
+    return 'qoutes kann man bisher nur manuell hinzufügen';
 }
