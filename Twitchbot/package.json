@@ -1,0 +1,16 @@
+{
+  "name": "twitchbot",
+  "version": "1.0.0",
+  "description": "This is a Twitch Bot",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-fetch": "^2.2.0",
+    "querystring": "^0.2.0",
+    "tmi.js": "^1.2.1"
+  }
+}
